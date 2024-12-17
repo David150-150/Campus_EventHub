@@ -13,7 +13,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <div
         className="relative bg-cover bg-center text-white py-20 px-10 text-center"
-        style={{ backgroundImage: "url('/assets/hero-bg.jpg')" }} // Add your hero image path
+        style={{ backgroundImage: "url('/hero-bg.jpg')" }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10">
