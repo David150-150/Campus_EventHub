@@ -4,33 +4,27 @@ import { Link } from "react-router-dom";
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Full-Width Background Image Section */}
+      {/* Combined Hero Section with Background Image */}
       <div
-        className="w-full h-80 bg-cover bg-center"
+        className="w-full h-[600px] bg-cover bg-center relative"
         style={{ backgroundImage: "url('/event.jpg')" }}
-      ></div>
-
-      {/* Hero Section */}
-      <div
-        className="relative bg-cover bg-center text-white py-20 px-10 text-center"
-        style={{ backgroundImage: "url('/hero-bg.jpg')" }}
       >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10">
+        <div className="absolute inset-0 bg-black/30"></div> {/* Subtle dark overlay */}
+        <div className="relative z-10 h-full flex flex-col justify-center items-center text-white px-10 text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold drop-shadow-lg">
             WELCOME TO OUR UNIQUE EVENT HUB
           </h1>
           <p className="mt-4 text-lg md:text-xl">
-            DISCOVER, THE SEAMILESS OF CREATING RSVP, SMOOTH EVENT.
+            DISCOVER, THE SEAMLESS OF CREATING RSVP, SMOOTH EVENT.
           </p>
           <div className="mt-6 flex justify-center gap-4">
             <Link to="/events">
-              <button className="px-6 py-3 bg-black text-white-700 font-bold rounded-lg hover:bg-blue-200 transition duration-300">
+              <button className="px-6 py-3 bg-primary/90 text-white font-bold rounded-lg hover:bg-primary transition duration-300">
                 Browse Events
               </button>
             </Link>
             <Link to="/createEvent">
-              <button className="px-6 py-3 bg-black text-white font-bold rounded-lg hover:bg-blue-200 transition duration-300">
+              <button className="px-6 py-3 bg-white/10 backdrop-blur-sm text-white font-bold rounded-lg hover:bg-white/20 transition duration-300 border border-white/30">
                 Create Event
               </button>
             </Link>
