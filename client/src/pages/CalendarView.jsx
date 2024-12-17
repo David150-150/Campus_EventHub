@@ -70,37 +70,37 @@ export default function CalendarView() {
       {/* Calendar Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-primary">
             Event Calendar
           </h1>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 bg-white p-2 rounded-lg shadow-sm">
             <button 
               onClick={() => setCurrentMonth(prev => addMonths(prev, -1))}
-              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-full hover:bg-primarylight text-primary transition-colors"
             >
-              <BsCaretLeftFill className="w-5 h-5 text-gray-600" />
+              <BsCaretLeftFill className="w-5 h-5" />
             </button>
-            <span className="text-xl font-semibold text-gray-700">
+            <span className="text-xl font-semibold text-primarydark px-4">
               {format(currentMonth, "MMMM yyyy")}
             </span>
             <button 
               onClick={() => setCurrentMonth(prev => addMonths(prev, 1))}
-              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-full hover:bg-primarylight text-primary transition-colors"
             >
-              <BsFillCaretRightFill className="w-5 h-5 text-gray-600" />
+              <BsFillCaretRightFill className="w-5 h-5" />
             </button>
           </div>
         </div>
       </div>
 
       {/* Calendar Grid */}
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
         {/* Days of Week */}
-        <div className="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
+        <div className="grid grid-cols-7 bg-primarylight">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
             <div 
               key={day} 
-              className="py-2 text-center text-sm font-semibold text-gray-600"
+              className="py-3 text-center text-sm font-bold text-primary border-b border-primary/10"
             >
               {day}
             </div>
@@ -117,12 +117,14 @@ export default function CalendarView() {
             return (
               <div 
                 key={date.toISOString()} 
-                className={`min-h-[120px] border border-gray-200 p-2 ${
-                  isCurrentDay ? 'bg-blue-50' : 'hover:bg-gray-50'
+                className={`min-h-[120px] border border-gray-100 p-2 transition-colors ${
+                  isCurrentDay 
+                    ? 'bg-primarylight/50 ring-1 ring-primary/20' 
+                    : 'hover:bg-gray-50'
                 }`}
               >
                 <div className={`text-sm font-semibold mb-1 ${
-                  isCurrentDay ? 'text-blue-600' : 'text-gray-700'
+                  isCurrentDay ? 'text-primary' : 'text-gray-700'
                 }`}>
                   {format(date, "d")}
                 </div>
@@ -131,13 +133,13 @@ export default function CalendarView() {
                     <Link 
                       key={event.id}
                       to={`/event/${event.id}`}
-                      className="block"
+                      className="block group"
                     >
-                      <div className="text-xs p-1 rounded bg-blue-100 hover:bg-blue-200 transition-colors">
-                        <div className="font-semibold text-blue-800">
+                      <div className="text-xs p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                        <div className="font-semibold text-primary">
                           {formatEventTime(event.time)}
                         </div>
-                        <div className="truncate text-blue-700">
+                        <div className="truncate text-primarydark group-hover:text-primary transition-colors">
                           {event.title}
                         </div>
                       </div>
@@ -151,16 +153,20 @@ export default function CalendarView() {
       </div>
 
       {/* Legend */}
-      <div className="mt-6 p-4 bg-white rounded-lg shadow-lg">
-        <h2 className="text-lg font-semibold text-gray-700 mb-3">Legend</h2>
-        <div className="flex items-center gap-6">
+      <div className="mt-6 p-4 bg-white rounded-xl shadow-lg border border-gray-200">
+        <h2 className="text-lg font-bold text-primary mb-3">Legend</h2>
+        <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-50 border border-gray-200"></div>
+            <div className="w-4 h-4 bg-primarylight/50 rounded border border-primary/20"></div>
             <span className="text-sm text-gray-600">Current Day</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-100"></div>
+            <div className="w-4 h-4 bg-primary/10 rounded"></div>
             <span className="text-sm text-gray-600">Event</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-primary/20 rounded"></div>
+            <span className="text-sm text-gray-600">Event (Hover)</span>
           </div>
         </div>
       </div>
