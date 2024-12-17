@@ -215,8 +215,12 @@ Campus EventHub is a robust backend API for managing events in an educational in
 - **RSVP System**: Users can RSVP to events with status updates.  
 - **Image Upload**: Upload images for events securely.  
 - **Role-Based Access**: Admins manage events; users view and RSVP.  
-- **Secure API**: Password encryption and protected endpoints.  
+- **Secure API**: Password encryption and protected endpoints.
+-  
+## **Links**
 
+-Link to frontend:https://https://campus-eventhub.onrender.com
+-Link to backend:https://campus-eventhub-api.onrender.com
 ---
 
 ## **Installation**
