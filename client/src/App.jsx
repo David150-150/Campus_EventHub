@@ -15,7 +15,7 @@ import { UserContextProvider } from './UserContext';
 import { ToastContainer } from 'react-toastify';
 
 // Configure Axios
-axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.baseURL = 'https://campus-eventhub-api.onrender.com';
 axios.defaults.withCredentials = true;
 
 function App() {

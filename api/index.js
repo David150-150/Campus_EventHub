@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: "http://https://campus-eventhub.onrender.com", // Frontend origin
+    origin: "https://campus-eventhub.onrender.com", // Frontend origin
   })
 );
 
