@@ -9,7 +9,7 @@ export default function LandingPage() {
         className="w-full h-[600px] bg-cover bg-center relative"
         style={{ backgroundImage: "url('/event.jpg')" }}
       >
-        <div className="absolute inset-0 bg-black/30"></div> {/* Subtle dark overlay */}
+        <div className="absolute inset-0 bg-black/30"></div>
         <div className="relative z-10 h-full flex flex-col justify-center items-center text-white px-10 text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold drop-shadow-lg">
             WELCOME TO OUR UNIQUE EVENT HUB

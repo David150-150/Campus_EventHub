@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "npx vite",
-    "build": "npx vite build",
+    "build": "vite build && cp _redirects dist/_redirects",
     "lint": "npx eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "npx vite preview"
+    "preview": "npx vite preview",
+    "start": "node server.js"
   },
   "dependencies": {
     "@fvilers/disable-react-devtools": "^1.3.0",
@@ -17,7 +18,8 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.2",
-    "react-toastify": "^10.0.6"
+    "react-toastify": "^10.0.6",
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
