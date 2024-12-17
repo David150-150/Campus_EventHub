@@ -1,5 +1,5 @@
 import axios from "axios";
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, addMonths, isSameDay } from "date-fns";
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, addMonths, isSameDay, isToday } from "date-fns";
 import { useEffect, useState } from "react";
 import { BsCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -31,7 +31,7 @@ export default function CalendarView() {
   const daysInMonth = eachDayOfInterval({ start: firstDayOfMonth, end: lastDayOfMonth });
   const firstDayOfWeek = firstDayOfMonth.getDay();
   const emptyCells = Array.from({ length: firstDayOfWeek }, (_, index) => (
-    <div key={`empty-${index}`} className="p-2 bg-white ring-4 ring-background"></div>
+    <div key={`empty-${index}`} className="border border-gray-200 bg-gray-50"></div>
   ));
 
   const getEventsForDay = (date) => {
@@ -46,17 +46,11 @@ export default function CalendarView() {
     });
   };
 
-  const formatEventTime = (date, time) => {
+  const formatEventTime = (time) => {
     try {
-      // Handle potential missing or invalid time
       if (!time) return '';
-      
-      // Ensure time is in HH:mm format
       const [hours, minutes] = time.split(':');
-      const eventDateTime = new Date(date);
-      eventDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
-      
-      return format(eventDateTime, "HH:mm");
+      return `${hours}:${minutes}`;
     } catch (error) {
       console.error('Error formatting time:', error);
       return '';
@@ -64,65 +58,110 @@ export default function CalendarView() {
   };
 
   if (loading) {
-    return <div className="text-center py-10">Loading calendar...</div>;
+    return (
+      <div className="flex justify-center items-center h-96">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="p-4 md:mx-16">
-      <div className="rounded p-2">
-        <div className="flex items-center mb-4 justify-center gap-6">
-          <button 
-            className="primary" 
-            onClick={() => setCurrentMonth(prev => addMonths(prev, -1))}
-          >
-            <BsCaretLeftFill className="w-auto h-5" />
-          </button>
-          <span className="text-xl font-semibold">
-            {format(currentMonth, "MMMM yyyy")}
-          </span>
-          <button 
-            className="primary" 
-            onClick={() => setCurrentMonth(prev => addMonths(prev, 1))}
-          >
-            <BsFillCaretRightFill className="w-auto h-5"/>
-          </button>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Calendar Header */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-3xl font-bold text-gray-800">
+            Event Calendar
+          </h1>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setCurrentMonth(prev => addMonths(prev, -1))}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <BsCaretLeftFill className="w-5 h-5 text-gray-600" />
+            </button>
+            <span className="text-xl font-semibold text-gray-700">
+              {format(currentMonth, "MMMM yyyy")}
+            </span>
+            <button 
+              onClick={() => setCurrentMonth(prev => addMonths(prev, 1))}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <BsFillCaretRightFill className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-7 text-center">
+      {/* Calendar Grid */}
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        {/* Days of Week */}
+        <div className="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
-            <div key={day} className="calendar-header">
+            <div 
+              key={day} 
+              className="py-2 text-center text-sm font-semibold text-gray-600"
+            >
               {day}
             </div>
           ))}
         </div>
 
+        {/* Calendar Days */}
         <div className="grid grid-cols-7">
-          {emptyCells.concat(
-            daysInMonth.map(date => {
-              const dayEvents = getEventsForDay(date);
-              return (
-                <div 
-                  key={date.toISOString()} 
-                  className="calendar-day"
-                >
-                  <div className="font-bold">{format(date, "d")}</div>
-                  <div className="mt-1 space-y-1">
-                    {dayEvents.map(event => (
-                      <Link 
-                        key={event.id}
-                        to={`/event/${event.id}`}
-                        className="block"
-                      >
-                        <div className="calendar-event">
-                          {formatEventTime(event.date, event.time)} {event.time ? '- ' : ''}{event.title}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+          {emptyCells}
+          {daysInMonth.map(date => {
+            const dayEvents = getEventsForDay(date);
+            const isCurrentDay = isToday(date);
+
+            return (
+              <div 
+                key={date.toISOString()} 
+                className={`min-h-[120px] border border-gray-200 p-2 ${
+                  isCurrentDay ? 'bg-blue-50' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className={`text-sm font-semibold mb-1 ${
+                  isCurrentDay ? 'text-blue-600' : 'text-gray-700'
+                }`}>
+                  {format(date, "d")}
                 </div>
-              );
-            })
-          )}
+                <div className="space-y-1">
+                  {dayEvents.map(event => (
+                    <Link 
+                      key={event.id}
+                      to={`/event/${event.id}`}
+                      className="block"
+                    >
+                      <div className="text-xs p-1 rounded bg-blue-100 hover:bg-blue-200 transition-colors">
+                        <div className="font-semibold text-blue-800">
+                          {formatEventTime(event.time)}
+                        </div>
+                        <div className="truncate text-blue-700">
+                          {event.title}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="mt-6 p-4 bg-white rounded-lg shadow-lg">
+        <h2 className="text-lg font-semibold text-gray-700 mb-3">Legend</h2>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-blue-50 border border-gray-200"></div>
+            <span className="text-sm text-gray-600">Current Day</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-blue-100"></div>
+            <span className="text-sm text-gray-600">Event</span>
+          </div>
         </div>
       </div>
     </div>
