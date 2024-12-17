@@ -28,7 +28,9 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: "https://campus-eventhub.onrender.com", // Frontend origin
+    origin: "https://campus-eventhub.onrender.com",
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
 
@@ -511,6 +513,17 @@ app.delete("/event/:id", authenticateToken, requireAdmin, async (req, res) => {
     console.error("Error deleting event:", error);
     res.status(500).json({ error: "Failed to delete event" });
   }
+});
+
+// Static file serving for uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Then serve the React app static files
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// Finally, the catch-all route for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 // Start server
