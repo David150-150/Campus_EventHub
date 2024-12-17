@@ -29,7 +29,7 @@ export default function Header() {
       <nav className="flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold hover:underline flex items-center">
-  <img src="logo.png" alt="Location" className="w-20 h-15 mr-2" />
+  <img src="/logo.png" alt="Logo" className="w-20 h-15 mr-2" />
   Campus EventHub - Acity
 </Link>
 

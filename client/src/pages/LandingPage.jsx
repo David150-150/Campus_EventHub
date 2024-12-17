@@ -7,7 +7,7 @@ export default function LandingPage() {
       {/* Full-Width Background Image Section */}
       <div
         className="w-full h-80 bg-cover bg-center"
-        style={{ backgroundImage: "url('event.jpg')" }} // Add your image path here
+        style={{ backgroundImage: "url('/event.jpg')" }}
       ></div>
 
       {/* Hero Section */}
@@ -47,21 +47,21 @@ export default function LandingPage() {
           {[
             {
               title: "Event Calendar",
-              img: "/assets/calendar-icon.png",
+              img: "/calendar-icon.png",
               description: "Stay organized with an intuitive calendar view of all events.",
-              bgColor: "bg-black opacity-50",  // Black background with 50% opacity
+              bgColor: "bg-black opacity-50",
             },
             {
               title: "Quick RSVP",
-              img: "/assets/rsvp-icon.png",
+              img: "/rsvp-icon.png",
               description: "Join events instantly and manage your participation seamlessly.",
-              bgColor: "bg-black opacity-50",  // Black background with 50% opacity
+              bgColor: "bg-black opacity-50",
             },
             {
               title: "Admin Features",
-              img: "/assets/admin-tools-icon.png",
+              img: "/admin-tools-icon.png",
               description: "Admins can create, manage, and oversee events effortlessly.",
-              bgColor: "bg-black opacity-50",  // Black background with 50% opacity
+              bgColor: "bg-black opacity-50",
             },
           ].map((feature, index) => (
             <div
