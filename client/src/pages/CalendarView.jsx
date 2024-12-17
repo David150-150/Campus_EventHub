@@ -73,10 +73,10 @@ export default function CalendarView() {
           <h1 className="text-3xl font-bold text-primary">
             Event Calendar
           </h1>
-          <div className="flex items-center gap-4 bg-white p-2 rounded-lg shadow-sm">
+          <div className="flex items-center gap-4 bg-gradient-to-r from-primarylight to-white p-2 rounded-lg shadow-sm">
             <button 
               onClick={() => setCurrentMonth(prev => addMonths(prev, -1))}
-              className="p-2 rounded-full hover:bg-primarylight text-primary transition-colors"
+              className="p-2 rounded-full hover:bg-white/50 text-primary transition-colors"
             >
               <BsCaretLeftFill className="w-5 h-5" />
             </button>
@@ -85,7 +85,7 @@ export default function CalendarView() {
             </span>
             <button 
               onClick={() => setCurrentMonth(prev => addMonths(prev, 1))}
-              className="p-2 rounded-full hover:bg-primarylight text-primary transition-colors"
+              className="p-2 rounded-full hover:bg-white/50 text-primary transition-colors"
             >
               <BsFillCaretRightFill className="w-5 h-5" />
             </button>
@@ -94,9 +94,9 @@ export default function CalendarView() {
       </div>
 
       {/* Calendar Grid */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-primarylight">
         {/* Days of Week */}
-        <div className="grid grid-cols-7 bg-primarylight">
+        <div className="grid grid-cols-7 bg-gradient-to-r from-primary/10 to-primarylight">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
             <div 
               key={day} 
@@ -113,33 +113,38 @@ export default function CalendarView() {
           {daysInMonth.map(date => {
             const dayEvents = getEventsForDay(date);
             const isCurrentDay = isToday(date);
+            const isWeekend = date.getDay() === 0 || date.getDay() === 6;
 
             return (
               <div 
                 key={date.toISOString()} 
                 className={`min-h-[120px] border border-gray-100 p-2 transition-colors ${
                   isCurrentDay 
-                    ? 'bg-primarylight/50 ring-1 ring-primary/20' 
-                    : 'hover:bg-gray-50'
+                    ? 'bg-gradient-to-br from-primarylight to-white ring-1 ring-primary/20' 
+                    : isWeekend
+                    ? 'bg-gray-50/50'
+                    : 'hover:bg-primarylight/20'
                 }`}
               >
                 <div className={`text-sm font-semibold mb-1 ${
-                  isCurrentDay ? 'text-primary' : 'text-gray-700'
+                  isCurrentDay ? 'text-primary' : isWeekend ? 'text-accent-pink' : 'text-gray-700'
                 }`}>
                   {format(date, "d")}
                 </div>
                 <div className="space-y-1">
-                  {dayEvents.map(event => (
+                  {dayEvents.map((event, idx) => (
                     <Link 
                       key={event.id}
                       to={`/event/${event.id}`}
                       className="block group"
                     >
-                      <div className="text-xs p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                        <div className="font-semibold text-primary">
+                      <div className={`text-xs p-1.5 rounded-lg transition-all transform hover:scale-105 ${
+                        getEventColor(idx)
+                      }`}>
+                        <div className="font-semibold text-white">
                           {formatEventTime(event.time)}
                         </div>
-                        <div className="truncate text-primarydark group-hover:text-primary transition-colors">
+                        <div className="truncate text-white/90 group-hover:text-white">
                           {event.title}
                         </div>
                       </div>
@@ -153,23 +158,37 @@ export default function CalendarView() {
       </div>
 
       {/* Legend */}
-      <div className="mt-6 p-4 bg-white rounded-xl shadow-lg border border-gray-200">
+      <div className="mt-6 p-4 bg-white rounded-xl shadow-lg border border-primarylight">
         <h2 className="text-lg font-bold text-primary mb-3">Legend</h2>
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-primarylight/50 rounded border border-primary/20"></div>
+            <div className="w-4 h-4 bg-gradient-to-br from-primarylight to-white rounded border border-primary/20"></div>
             <span className="text-sm text-gray-600">Current Day</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-primary/10 rounded"></div>
-            <span className="text-sm text-gray-600">Event</span>
+            <div className="w-4 h-4 bg-accent-green rounded"></div>
+            <span className="text-sm text-gray-600">Workshop</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-primary/20 rounded"></div>
-            <span className="text-sm text-gray-600">Event (Hover)</span>
+            <div className="w-4 h-4 bg-accent-pink rounded"></div>
+            <span className="text-sm text-gray-600">Seminar</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-accent-blue rounded"></div>
+            <span className="text-sm text-gray-600">Club Activity</span>
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+function getEventColor(index) {
+  const colors = [
+    'bg-accent-green hover:bg-accent-green/90',
+    'bg-accent-pink hover:bg-accent-pink/90',
+    'bg-accent-blue hover:bg-accent-blue/90',
+    'bg-accent-yellow hover:bg-accent-yellow/90'
+  ];
+  return colors[index % colors.length];
 }
